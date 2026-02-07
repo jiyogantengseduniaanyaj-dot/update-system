@@ -16,17 +16,13 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential libffi-dev git zip unzip openjdk-11-jdk-headless
+          sudo apt-get install -y build-essential libffi-dev git zip unzip openjdk-11-jdk-headless python3-pip
+          # Install build tools tambahan yang sering bikin rewel
+          sudo apt-get install -y autoconf automake libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake
           pip install --user --upgrade buildozer cython virtualenv
 
       - name: Build APK with Buildozer
         run: |
           export PATH=$PATH:$HOME/.local/bin
-          # Gunakan opsi --auto-accept-sdk-license buat gantiin peran 'yes'
+          # Pakai flag --auto-accept-sdk-license biar dia download SDK + Build Tools otomatis
           buildozer -v android debug --auto-accept-sdk-license
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: package
-          path: bin/*.apk
