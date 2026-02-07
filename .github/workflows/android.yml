@@ -13,16 +13,46 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install Dependencies
+      - name: Install All-in-One Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential libffi-dev git zip unzip openjdk-11-jdk-headless python3-pip
-          # Install build tools tambahan yang sering bikin rewel
-          sudo apt-get install -y autoconf automake libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake
+          # Ini daftar lengkap library biar kaga ada error 'not found' lagi
+          sudo apt-get install -y \
+            build-essential \
+            git \
+            ffmpeg \
+            libsdl2-dev \
+            libsdl2-image-dev \
+            libsdl2-mixer-dev \
+            libsdl2-ttf-dev \
+            libportmidi-dev \
+            libswscale-dev \
+            libavformat-dev \
+            libavcodec-dev \
+            zlib1g-dev \
+            libffi-dev \
+            libssl-dev \
+            libncurses6 \
+            libncursesw6 \
+            libtinfo6 \
+            libdevice-serialport-perl \
+            openjdk-11-jdk-headless \
+            zip \
+            unzip \
+            autoconf \
+            automake \
+            libtool \
+            pkg-config \
+            cmake \
+            ant \
+            python3-setuptools
+
+          # Update pip dan install alat rakit
+          pip install --user --upgrade pip
           pip install --user --upgrade buildozer cython virtualenv
 
       - name: Build APK with Buildozer
         run: |
           export PATH=$PATH:$HOME/.local/bin
-          # Pakai flag --auto-accept-sdk-license biar dia download SDK + Build Tools otomatis
+          # Gaspol rakit, auto setuju semua lisensi Google
           buildozer -v android debug --auto-accept-sdk-license
