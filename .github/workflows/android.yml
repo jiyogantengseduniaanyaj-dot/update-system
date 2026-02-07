@@ -15,16 +15,15 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          sudo apt-get update --fix-missing
+          sudo apt-get update
           sudo apt-get install -y build-essential libffi-dev git zip unzip openjdk-11-jdk-headless
           pip install --user --upgrade buildozer cython virtualenv
 
       - name: Build APK with Buildozer
         run: |
           export PATH=$PATH:$HOME/.local/bin
-          # Kita pakai 'init' dulu buat mastiin file spec terbaca
-          buildozer init || true 
-          yes | buildozer -v android debug
+          # Gunakan opsi --auto-accept-sdk-license buat gantiin peran 'yes'
+          buildozer -v android debug --auto-accept-sdk-license
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
